@@ -1,1 +1,1 @@
-# fastapi-tuterial
+# fastapi-tutorial
