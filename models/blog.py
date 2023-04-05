@@ -2,5 +2,5 @@ from pydantic import BaseModel
 from typing import Optional
 
 
-class User(BaseModel):
+class Blog(BaseModel):
     pass
