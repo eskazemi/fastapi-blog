@@ -1,36 +1,38 @@
+from typing import List
 from fastapi import (
     APIRouter,
-    Response,
+    Depends,
 )
-from user.models import User
-from passlib.hash import sha256_crypt
-from starlette.status import HTTP_204_NO_CONTENT
+from user.schema import (
+    CreateUser,
+    UpdateUser,
+    ShowUser
+)
+from authentication.oauth import get_current_user
+from sqlalchemy.orm import Session
+from database import get_db
+from .repository import UserRepository
 
-user_router = APIRouter()
-
-_tag_base = ["user"]
+user_router = APIRouter(tags=["user"])
 
 
-@user_router.get('', tags=_tag_base)
-def get_all():
+@user_router.post('', status_code=201)
+def create(body: CreateUser, db: Session = Depends(get_db),
+           get_current_user: CreateUser = Depends(get_current_user)
+           ):
+    return UserRepository.create(db, body)
+
+
+@user_router.get('/{id}', response_model=ShowUser)
+def get_one(user_id: int, db: Session = Depends(get_db),
+            get_current_user: CreateUser = Depends(get_current_user)
+            ):
+    return UserRepository.get_one(db, user_id)
+
+
+@user_router.put('/{user_id}', )
+def update(user_id: int, db: Session = Depends(get_db),
+           get_current_user: CreateUser = Depends(get_current_user)
+           ):
     pass
 
-
-@user_router.post('', tags=_tag_base)
-def create_user():
-    pass
-
-
-@user_router.get('/{id}', tags=_tag_base)
-def find_user(id: str):
-    pass
-
-
-@user_router.put('/{user_id}', tags=_tag_base)
-def update_user(user_id: str):
-    pass
-
-
-@user_router.delete('/{user_id}', tags=_tag_base)
-def delete_user(user_id: str):
-    pass
