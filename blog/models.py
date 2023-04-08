@@ -9,7 +9,6 @@ from database import (
     engine,
 )
 from sqlalchemy.orm import relationship
-from user.models import User
 
 
 
