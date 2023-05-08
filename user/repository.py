@@ -10,7 +10,7 @@ from hashing import HashController
 class UserRepository:
 
     @staticmethod
-    def get_all(db: Session,):
+    def get_all(db: Session):
         pass
 
     @staticmethod
@@ -33,5 +33,10 @@ class UserRepository:
                 "data": new_user}
 
     @staticmethod
-    def update(db: Session, user_id: int):
-        pass
+    def get_user_by_email(db: Session, email: str):
+        user = db.query(User).filter_by(email=email).first()
+        if user:
+            return user
+        else:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                detail=f"USer with th id {email} Not Found")
